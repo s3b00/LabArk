@@ -1,0 +1,12 @@
+.content {
+    background: #FDFDFD;
+    height: calc(100vh - 56.5px);
+}
+
+.bg-gray {
+    background: #f8f9fa;
+}
+
+.list-group a {
+    color: black;
+}
