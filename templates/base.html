@@ -15,7 +15,7 @@
     <div class="container">
         <nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
           <a class="navbar-brand ml-4 mr-5" href="index.html">
-              <img src="{% static "img/logo.png" %}" alt="logo" height="25px" class="mr-2 mt-0"> The ARK
+              <img src="{% static "img/logo.png" %}" alt="logo" height="25px" class="mr-2 mt-0"> LABARK
           </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -23,16 +23,16 @@
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item mr-2">
-                <a href="#" class="nav-link">Популярные запросы</a>
+                <a href="{% url 'popular' %}" class="nav-link">Популярные запросы</a>
               </li>
               <li class="nav-item mr-2">
-                <a href="#" class="nav-link">Архив</a>
+                <a href="{% url 'archive' %}" class="nav-link">Архив</a>
               </li>
               <li class="nav-item mr-2">
-                <a href="#" class="nav-link">Подборки</a>
+                <a href="{% url 'libs' %}" class="nav-link">Подборки</a>
               </li>
               <li class="nav-item mr-2">
-                <a href="#" class="nav-link">Полезные ссылки</a>
+                <a href="{% url 'links' %}" class="nav-link">Полезные ссылки</a>
               </li>
               <li class="nav-item mr-2">
                 <a href="{% url "faq" %}" class="nav-link">FAQ</a>

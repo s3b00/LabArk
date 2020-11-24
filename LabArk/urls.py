@@ -5,6 +5,9 @@ from LabArkApp import views as LA
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^faq', LA.faq, name="faq"),
-    re_path(r'^t', LA.t, name="test"),
     re_path('', LA.home, name="homepage"),
+    re_path('^popular', LA.popular, name="popular"),
+    re_path('^libs', LA.libs, name="libs"),
+    re_path('^archive', LA.archive, name="archive"),
+    re_path('^links', LA.links, name="links"),
 ]
