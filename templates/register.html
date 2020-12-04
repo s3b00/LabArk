@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Регистрация</title>
+  <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
+  <link rel="stylesheet" href="{% static "css/style.css" %}">
+  <style>
+    body, html {
+      height: 100%;
+      background-image: url("{% static "img/bg.png"%}");
+    }
+
+    .logform {
+      border: 1px solid black;
+      padding: 15px;
+      background-color: #f1f0f0a1;
+      border-radius: 1%;
+    }
+  </style>
+</head>
+<body>
+<div class="container h-100">
+  <div class="row h-100 justify-content-center align-items-center">
+    <form class="col-12 col-lg-6 logform" method="POST" action="{% url 'register' %}">
+      {% csrf_token %}
+      <img src="{% static "img/LabarkLogo.png" %}" alt="LOGO" width="30%" height="30%" class="rounded mx-auto d-block">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Email</label>
+        <br>
+        <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" placeholder="Введите электронную почту">
+        <small id="emailHelp" class="form-text text-muted">Ваша почта нужна нам для отправки уведомлений.</small>
+      </div>
+      <div class="form-group">
+        <label for="usernameInput">Имя пользователя</label>
+        <br>
+        <input type="text" name="username" class="form-control" id="usernameid" placeholder="Введите свое уникальное имя">
+      </div>
+      <div class="form-group">
+        <label for="secondnameInput">Фамилия</label>
+        <br>
+        <input type="text" name="secondname" class="form-control" id="secondnameid" placeholder="Введите свою фамилию">
+      </div>
+      <div class="form-group">
+        <label for="nameInput">Имя</label>
+        <br>
+        <input type="text" name="name" class="form-control" id="nameid" placeholder="Введите свое настоящее имя">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Пароль</label>
+        <br>
+        <input type="password" class="form-control" name="password" id="exampleInputPassword1" aria-describedby="passwordHelp" placeholder="Введите пароль.">
+        <small id="passwordHelp" class="form-text text-muted">Используйте сложные пароли в целях собственной безопасности. Не передавайте его третьим лицам.</small>
+      </div>
+      <div class="form-check">
+        <br>
+        <input type="checkbox" class="form-check-input" id="exampleCheck1" name="isinout">
+        <label class="form-check-label" for="exampleCheck1">Оставаться в сети</label>
+      </div>
+      <br>
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary bg-info w-50 mb-2">Регистрация</button>
+        <br>
+        <button type="reset" class="btn btn-secondary w-50">Начать заново</button>
+      </div>
+      <input type="hidden" name="next" value="{{ next }}" />
+    </form> 
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</body>
+</html>
