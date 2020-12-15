@@ -62,3 +62,7 @@ def register(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect("/")
+
+
+def details(request):
+    return HttpResponse("уъу")
