@@ -1,11 +1,11 @@
 <div class="card">
     <div class="card-header">
-        <img src="" alt="<avatar>">
-        <p>{{ user.get_username}}</p>
+        <a class="text-dark" href="{% url 'profile_view' user.id %}"><strong>{{ user.get_username}}</strong></a>
+        <p>Публикации: {{ user.profile.uploads }}</p>
     </div>
     <div class="card-body">
-        <a href="#" >Редактировать</a>
+        <a href="#" class="text-dark font-weight-bold">Редактировать</a>
         <br>
-        <a href="{% url 'logout' %}">Выход из аккаунта</a>
+        <a href="{% url 'logout' %}" class="text-dark font-weight-bold">Выход из аккаунта</a>
     </div>
 </div>

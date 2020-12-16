@@ -1,0 +1,8 @@
+<form method="post" action="{% url "category_add" %}" id="category_form" class="col-12">
+    {% csrf_token %}
+    <div class="form-group row">
+        <label for="name" class="col-form-label">Название категории</label>
+        <input type="text" class="form-control" name="name" id="name" placeholder="Название дисциплины или краткое описание категории">
+    </div>
+    <input type="submit" class="btn btn-primary m-auto d-block text-center" value="Добавить категорию">
+</form>

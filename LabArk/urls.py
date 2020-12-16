@@ -1,9 +1,14 @@
 from django.contrib import admin
 from django.urls import path, re_path
+
+from LabArk import settings
 from LabArkApp import views as LA
+from django.conf.urls.static import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    re_path('^admin/?', admin.site.urls),
     re_path(r'^faq', LA.faq, name="faq"),
     re_path(r'^popular', LA.popular, name="popular"),
     re_path(r'^libs', LA.libs, name="libs"),
@@ -12,6 +17,12 @@ urlpatterns = [
     re_path(r'^register', LA.register, name="register"),
     re_path(r'^login', LA.login_view, name="login"),
     re_path(r'^logout', LA.logout_view, name="logout"),
-    re_path(r'^details/(?P<id>\d+?)', LA.details, name="details"),
-    re_path('', LA.home, name="homepage"),
+    re_path(r'^details/(?P<pk>\d+?)', LA.details, name="details"),
+    re_path(r'^user/(?P<pk>\d+?)', LA.get_profile, name="profile_view"),
+    re_path(r'^labs/add$', LA.add_lab, name="lab_add"),
+    re_path(r'^category/add/?$', LA.add_category, name="category_add"),
+    path('', LA.home, name="homepage"),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += staticfiles_urlpatterns()

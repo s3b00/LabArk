@@ -9,19 +9,25 @@ Home
     <table class="table table-hover table-striped ml-0 mr-5 col-12 col-lg-9 w-100">
       <thead class="thead-dark">
         <tr>
-          <td>Название файла</td>
-          <td>Категория</td>
-          <td>Дата опубликования</td>
-          <td>Автор</td>
+          <td class="small">Название файла</td>
+          <td class="small">Вариант</td>
+          <td class="small">Категория</td>
+          <td class="small">Время публикации</td>
+          <td class="small">Год написания</td>
+          <td class="small">Автор</td>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Лабораторная №11, В-13</td>
-          <td>КПиЯП</td>
-          <td>20.11.2001</td>
-          <td>S3boo</td>
-        </tr>
+        {% for x in last_labs %}
+            <tr>
+              <td class="small"><a href="{% url "details" x.id %}" class="text-dark">{{ x.name }}</a></td>
+              <td class="small">{{ x.variant }}</td>
+              <td class="small"><a href="#" class="text-dark">{{ x.category }}</a></td>
+              <td class="small">{{ x.upload_time }}</td>
+              <td class="small">{{ x.year }}</td>
+              <td class="small"><a href="{% url "profile_view" x.author.id %}" class="text-dark">{{ x.author }}</a></td>
+            </tr>
+        {% endfor %}
       </tbody>
     </table>
     <div class="right-block col-12 col-lg-2 mt-5 pr-0 text-center small pt-3 pt-md-0">
@@ -31,12 +37,27 @@ Home
             {% include "unauthorized.html" %}
         {% endif %}
         <div class="list-group list-group-flush pt-4">
-            <a href="#" class="list-group-item list-group-item-action ">Добавить файл</a>
-            <a href="#" class="list-group-item list-group-item-action ">Добавить категорию</a>
+            <a href="{% url 'lab_add' %}" class="list-group-item list-group-item-action ">Добавить файл</a>
+            <a class="list-group-item list-group-item-action" data-toggle="modal" data-target="#categoryAddForm" href="#">Добавить категорию</a>
             <a href="#" class="list-group-item list-group-item-action ">Случайный файл</a>
         </div>
         <p class="mt-5">@ 2020. Powered by S3boo</p>
     </div>
   </div>
+
+<div class="modal fade" id="categoryAddForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+       <div class="modal-header">
+         <h4 class="modal-title" id="exampleModalLabel">Добавить категорию</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            {% include "add_category_form.html" %}
+        </div>
+    </div>
+</div>
 </div>
 {% endblock %}
