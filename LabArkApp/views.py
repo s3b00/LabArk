@@ -1,15 +1,19 @@
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 
 from LabArkApp.models import Lab, Category
 from . import forms
+from random import randint
+from django.urls import reverse
+
 
 def home(request):
     return render(request, 'index.html', context={
-        'last_labs': Lab.objects.all().reverse()[0:20]
+        'last_labs': Lab.objects.all(),
+        'form': forms.AddCategoryForm()
     })
 
 
@@ -52,21 +56,23 @@ def login_view(request):
 
 def register(request):
     if request.method == "GET":
-        return render(request, 'register.html')
+        return render(request, 'register.html', context={
+            'form': forms.RegisterUser()
+        })
     else:
-        username = request.POST.get("username")
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-        user = User.objects.create_user(username=username, password=password, email=email)
-        user.save()
-        if request.POST.get("SetLogin") == "1":
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    return HttpResponseRedirect("/")
-                else:
-                    pass
+        form = forms.RegisterUser(request.POST)
+
+        if form.is_valid():
+            user = User.objects.create_user(**form.cleaned_data)
+            user.save()
+            if request.POST.get("SetLogin") == "1":
+                user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+                if user is not None:
+                    if user.is_active:
+                        login(request, user)
+                        return HttpResponseRedirect("/")
+                    else:
+                        pass
 
         return HttpResponseRedirect("/")
 
@@ -78,7 +84,7 @@ def logout_view(request):
 
 
 def details(request, pk):
-    lab = Lab.objects.get(pk=pk)
+    lab = get_object_or_404(Lab, id=pk)
     return render(request, "lab_view.html", context={
         "lab_object": lab,
         "lab_link": lab.file.path
@@ -86,7 +92,7 @@ def details(request, pk):
 
 
 def get_profile(request, pk):
-    user = User.objects.get(pk=pk)
+    user = get_object_or_404(User, id=pk)
     return render(request, "profile.html", context={
         "User": user
     })
@@ -94,7 +100,26 @@ def get_profile(request, pk):
 
 def add_lab(request):
     if request.method == "POST":
-        pass
+        form = forms.UploadLabForm(request.POST)
+        if form.is_valid():
+            if request.user.is_authenticated:
+                author = request.user
+            else:
+                author = User.objects.get_by_natural_key('anonymous')
+
+            lab = Lab(**form.cleaned_data)
+            lab.author = author
+            lab.category = Category.objects.get(pk=request.POST.get("category"))
+            lab.file = request.FILES['file']
+            lab.save()
+
+            author.profile.reputation += 10
+            author.profile.uploads += 1
+            author.save()
+        else:
+            return HttpResponse(form.errors)
+
+        return HttpResponseRedirect('/')
     else:
         return render(request, "add_lab.html", context={
             'form': forms.UploadLabForm(),
@@ -109,3 +134,7 @@ def add_category(request):
         return HttpResponseRedirect("/")
     else:
         return HttpResponseRedirect('/')
+
+
+def get_random_lab(request):
+    return HttpResponseRedirect(reverse('details', args=[randint(1, Lab.objects.count())]))

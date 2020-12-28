@@ -1,0 +1,13 @@
+    <div class="right-block col-12 col-lg-2 mt-5 pr-0 text-center small pt-3 pt-md-0">
+        {% if request.user.is_authenticated %}
+            {% include "userframe.html" %}
+        {% else %}
+            {% include "unauthorized.html" %}
+        {% endif %}
+        <div class="list-group list-group-flush pt-4">
+            <a href="{% url 'lab_add' %}" class="list-group-item list-group-item-action ">Добавить файл</a>
+            <a class="list-group-item list-group-item-action" data-toggle="modal" data-target="#categoryAddForm" href="#">Добавить категорию</a>
+            <a href="{% url 'random_lab' %}" class="list-group-item list-group-item-action">Случайный файл</a>
+        </div>
+        <p class="mt-5">@ 2020. Powered by S3boo</p>
+    </div>

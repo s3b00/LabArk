@@ -21,6 +21,7 @@ urlpatterns = [
     re_path(r'^user/(?P<pk>\d+?)', LA.get_profile, name="profile_view"),
     re_path(r'^labs/add$', LA.add_lab, name="lab_add"),
     re_path(r'^category/add/?$', LA.add_category, name="category_add"),
+    re_path(r'^random_lab$', LA.get_random_lab, name="random_lab"),
     path('', LA.home, name="homepage"),
 ]
 
