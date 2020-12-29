@@ -5,11 +5,15 @@
 {% endblock %}
 
 {% block content %}
-  <div class="row">
-      <div class="col-md-4">
+  <div class="row mt-5">
+      <div class="col-12 col-md-3  text-center">
+        <img src="{{ user.profile.userpic.url }}" alt="{{ user.get_username }}" class="img-fluid">
       </div>
-      <div class="col-md-8">
-
+      <div class="col-12 col-md-9">
+        <p>Имя пользователя: {{ user.get_username }}</p>
+        <p>Имя: {{ user.first_name }}</p>
+        <p>Фамилия: {{ user.last_name }}</p>
+        <p>Репутация: {{ user.profile.reputation }}</p>
       </div>
   </div>
 

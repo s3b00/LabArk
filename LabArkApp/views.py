@@ -14,7 +14,7 @@ def home(request):
     return render(request, 'index.html', context={
         'last_labs': Lab.objects.all(),
         'form': forms.AddCategoryForm()
-    })
+    })  
 
 
 def faq(request):
@@ -22,7 +22,10 @@ def faq(request):
 
 
 def popular(request):
-    return render(request, 'popular.html')
+    return render(request, 'popular.html', context={
+        'popular_labs': Lab.objects.all().order_by('-views', 'name'),
+        'form': forms.AddCategoryForm()
+    })
 
 
 def archive(request):
@@ -85,16 +88,18 @@ def logout_view(request):
 
 def details(request, pk):
     lab = get_object_or_404(Lab, id=pk)
+    lab.views += 1
+    lab.save()
+
     return render(request, "lab_view.html", context={
         "lab_object": lab,
-        "lab_link": lab.file.path
     })
 
 
 def get_profile(request, pk):
     user = get_object_or_404(User, id=pk)
     return render(request, "profile.html", context={
-        "User": user
+        "user": user
     })
 
 
@@ -116,10 +121,10 @@ def add_lab(request):
             author.profile.reputation += 10
             author.profile.uploads += 1
             author.save()
+
+            return HttpResponseRedirect(reverse('details', args=[lab.pk]))
         else:
             return HttpResponse(form.errors)
-
-        return HttpResponseRedirect('/')
     else:
         return render(request, "add_lab.html", context={
             'form': forms.UploadLabForm(),

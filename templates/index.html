@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Home
+Labark
 {% endblock %}
 
 {% block content %}
@@ -12,9 +12,10 @@ Home
           <td class="small">Название файла</td>
           <td class="small">Вариант</td>
           <td class="small">Категория</td>
-          <td class="small">Время публикации</td>
           <td class="small">Год написания</td>
           <td class="small">Автор</td>
+          <td class="small">Просмотры</td>
+          <td class="small">Рейтинг</td>
         </tr>
       </thead>
       <tbody>
@@ -23,9 +24,10 @@ Home
               <td class="small"><a href="{% url "details" x.id %}" class="text-dark">{{ x.name }}</a></td>
               <td class="small">{{ x.variant }}</td>
               <td class="small"><a href="#" class="text-dark">{{ x.category }}</a></td>
-              <td class="small">{{ x.upload_time }}</td>
               <td class="small">{{ x.year }}</td>
               <td class="small"><a href="{% url "profile_view" x.author.id %}" class="text-dark">{{ x.author }}</a></td>
+              <td class="small">{{ x.views }}</td>
+              <td class="small">{{ x.rating }}</td>
             </tr>
         {% endfor %}
       </tbody>

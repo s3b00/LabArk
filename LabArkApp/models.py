@@ -11,6 +11,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     reputation = models.IntegerField(default=0)
     uploads = models.IntegerField(default=0)
+    userpic = models.ImageField(upload_to="userpics", default="default.png")
 
     def __str__(self):
         return self.user.username
@@ -40,11 +41,12 @@ class Lab(models.Model):
     course = models.IntegerField()
     variant = models.IntegerField(default=0)
     year = models.IntegerField(default=0)
-    category = models.ForeignKey(Category, on_delete=models.SET_DEFAULT, default="Без группы")
-    author = models.ForeignKey(User, on_delete=models.SET_DEFAULT, default=AnonymousUser)
-    downloads = models.IntegerField(default=0)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    views = models.IntegerField(default=0)
     upload_time = models.DateTimeField(auto_now_add=True)
     file = models.FileField(upload_to="files")
+    rating = models.IntegerField(default=0)
 
     def get_absolute_url(self):
         return reverse('people.views.details', args=[str(self.id)])
