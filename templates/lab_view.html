@@ -1,22 +1,32 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}
 {{ lab_object.name }}
 {% endblock %}
 {% block content %}
+<h1 class="mb-0">{{ lab_object.name }}</h1>
+<a href="{% url 'profile_view' lab_object.author.pk %}" class="text-dark">{{ lab_object.author.get_username }}</a>
+
 <div class="row mt-4">
     <div class="col-6">
-        <h1 class="mb-0">{{ lab_object.name }}</h1>
-        <a href="{% url 'profile_view' lab_object.author.pk %}" class="text-dark">{{ lab_object.author.get_username }}</a>
         <p class="mt-4">Курс: {{ lab_object.course }}</p>
         <p>Категория: {{ lab_object.category.name }}</p>
-        <p>Вариант: {{ lab_object.variant }}</p>
+        <p>Вариант: {% if lab_object.variant > 0 %} {{ lab_object.variant }} {% else %} Без варианта {% endif %}</p>
         <p>Год: {{ lab_object.year }}</p>
         <p>Просмотры: {{ lab_object.views }}</p>
         <p>Дата публикации: {{ lab_object.upload_time }}</p>
         <p>Рейтинг: <strong {% if lab_object.rating > 0 %} class="text-success"> +{{ lab_object.rating }} {% elif lab_object.rating == 0 %} class="text-warning"> {{ lab_object.rating }} {% else %} class="text-danger"> -{{ lab_object.rating }} {% endif %}</strong></p>
     
         <a href="{{ lab_object.file.url }}">Загрузить</a>
+    </div>
+    <div class="col-6">
+        {% if lab_object.extension == ".docx" or lab_object.extension == ".doc "%}
+            <img src="{% static "img/docx.png" %}" alt="word file" class="img-fluid">
+        {% elif lab_object.extension == ".pdf" %}
+            <img src="{% static "img/pdf.png" %}" alt="pdf file" class="img-fluid">
+        {% elif lab_object.extension == ".zip" or lab_object.extension == ".7z" or lab_object.extension == ".rar" or lab_object.extension == ".zipx" or lab_object.extension == ".tar"%}
+            <img src="{% static "img/zip.png" %}" alt="zip file" class="img-fluid">
+        {% endif %}
     </div>
 </div>
 {% endblock %}

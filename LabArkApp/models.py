@@ -6,6 +6,7 @@ from django.dispatch import receiver
 from django.urls import reverse
 from django.db import models
 import os
+from django.db.models.aggregates import Sum
 
 
 class Profile(models.Model):
@@ -38,13 +39,16 @@ class Category(models.Model):
 
     def get_absolute_url(self):
          return reverse('category_labs', args=[self.id])
+    
+    def get_views(self):
+        return Lab.objects.filter(category__pk=self.pk).aggregate(Sum('views'))['views__sum']
 
 
 class Lab(models.Model):
     name = models.CharField(max_length=50, blank=False)
     course = models.IntegerField()
-    variant = models.IntegerField(default=0)
-    year = models.IntegerField(default=0)
+    variant = models.IntegerField(default=0, null=True)
+    year = models.IntegerField(default=datetime.now().year)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     views = models.IntegerField(default=0)

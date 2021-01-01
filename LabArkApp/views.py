@@ -40,7 +40,9 @@ def archive(request):
 
 
 def libs(request):
-    return render(request, 'libs.html')
+    return render(request, 'libs.html', context={
+        'categories': Category.objects.all()
+    })
 
 
 def links(request):
@@ -49,19 +51,24 @@ def links(request):
 
 def login_view(request):
     if request.method == "GET":
-        return render(request, 'login.html')
+        return render(request, 'login.html', context={
+            'form': forms.LoginUser()
+        })
     else:
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                return HttpResponseRedirect("/")
+        form = forms.LoginUser(request.POST)
+
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return HttpResponseRedirect("/")
+                else:
+                    pass
             else:
                 pass
-        else:
-            pass
 
 
 def register(request):
@@ -132,7 +139,11 @@ def add_lab(request):
 
             return HttpResponseRedirect(reverse('details', args=[lab.pk]))
         else:
-            return HttpResponse(form.errors)
+            return render(request, 'add_lab.html', context={
+                'form': forms.UploadLabForm(),
+                'category': Category.objects.all(),
+                'errors': form.errors
+            })
     else:
         return render(request, "add_lab.html", context={
             'form': forms.UploadLabForm(),
@@ -142,8 +153,11 @@ def add_lab(request):
 
 def add_category(request):
     if request.method == "POST":
-        category = Category.objects.create(name=request.POST.get("name"))
-        category.save()
+        form = forms.AddCategoryForm(request.POST)
+        
+        if form.is_valid():
+            category = Category.objects.create(name=form.cleaned_data['name'])
+            category.save()
         return HttpResponseRedirect("/")
     else:
         return HttpResponseRedirect('/')
