@@ -22,8 +22,15 @@ def faq(request):
 
 
 def popular(request):
-    return render(request, 'popular.html', context={
-        'popular_labs': Lab.objects.all().order_by('-views', 'name'),
+    return render(request, 'index.html', context={
+        'last_labs': Lab.objects.all().order_by('-views', 'name'),
+        'form': forms.AddCategoryForm()
+    })
+
+
+def category_labs(request, pk):
+    return render(request, 'index.html', context={
+        'last_labs': Lab.objects.all().filter(category__pk=pk),
         'form': forms.AddCategoryForm()
     })
 
@@ -99,7 +106,8 @@ def details(request, pk):
 def get_profile(request, pk):
     user = get_object_or_404(User, id=pk)
     return render(request, "profile.html", context={
-        "user": user
+        'user': user,
+        'last_labs': Lab.objects.all().filter(author__pk=pk)
     })
 
 

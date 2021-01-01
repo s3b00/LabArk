@@ -7,7 +7,7 @@
 {% block content %}
   <div class="row mt-5">
       <div class="col-12 col-md-3  text-center">
-        <img src="{{ user.profile.userpic.url }}" alt="{{ user.get_username }}" class="img-fluid">
+        <img width="250px" height="250px" src="{{ user.profile.userpic.url }}" alt="{{ user.get_username }}" class="img-fluid">
       </div>
       <div class="col-12 col-md-9">
         <p>Имя пользователя: {{ user.get_username }}</p>
@@ -16,5 +16,34 @@
         <p>Репутация: {{ user.profile.reputation }}</p>
       </div>
   </div>
-
+  {% if last_labs %}
+    <table class="table table-hover table-striped ml-0 col-12 mt-5">
+      <thead class="thead-dark">
+        <tr>
+          <td class="small">Название файла</td>
+          <td class="small">Вариант</td>
+          <td class="small">Категория</td>
+          <td class="small">Год написания</td>
+          <td class="small">Просмотры</td>
+          <td class="small">Рейтинг</td>
+        </tr>
+      </thead>
+      <tbody>
+        {% for x in last_labs %}
+            <tr>
+              <td class="small"><a href="{% url "details" x.id %}" class="text-dark">{{ x.name }}</a></td>
+              <td class="small">{{ x.variant }}</td>
+              <td class="small"><a href="{% url "category_labs" x.category.id %}" class="text-dark">{{ x.category }}</a></td>
+              <td class="small">{{ x.year }}</td>
+              <td class="small">{{ x.views }}</td>
+              <td class="small">{{ x.rating }}</td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="col-12 text-center mt-5">
+      <h1>Этот пользователь еще не публиковал записи</h1>
+    </div>
+  {% endif %}
 {% endblock %}

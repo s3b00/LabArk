@@ -12,6 +12,7 @@ urlpatterns = [
     re_path(r'^faq', LA.faq, name="faq"),
     re_path(r'^popular', LA.popular, name="popular"),
     re_path(r'^libs', LA.libs, name="libs"),
+    re_path(r'^category/(?P<pk>\d+?)', LA.category_labs, name='category_labs'),
     re_path(r'^archive', LA.archive, name="archive"),
     re_path(r'^links', LA.links, name="links"),
     re_path(r'^register', LA.register, name="register"),

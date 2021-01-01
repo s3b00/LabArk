@@ -5,6 +5,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
 from django.db import models
+import os
 
 
 class Profile(models.Model):
@@ -35,6 +36,9 @@ class Category(models.Model):
     def __str__(self):
         return f"{self.name}"
 
+    def get_absolute_url(self):
+         return reverse('category_labs', args=[self.id])
+
 
 class Lab(models.Model):
     name = models.CharField(max_length=50, blank=False)
@@ -53,6 +57,10 @@ class Lab(models.Model):
 
     def __str__(self):
         return f"<{self.author.username}> {self.name}"
+
+    def extension(self):
+            name, extension = os.path.splitext(self.file.name)
+            return extension
 
     class Meta:
         ordering = ["-id"]

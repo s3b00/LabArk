@@ -4,15 +4,19 @@
 {{ lab_object.name }}
 {% endblock %}
 {% block content %}
-    <p>Название: {{ lab_object.name }}</p>
-    <p>Курс: {{ lab_object.course }}</p>
-    <p>Вариант: {{ lab_object.variant }}</p>
-    <p>Год: {{ lab_object.year }}</p>
-    <p>Категория: {{ lab_object.category.name }}</p>
-    <p>Автор: {{ lab_object.author.get_username }}</p>
-    <p>Просмотры: {{ lab_object.views }}</p>
-    <p>Дата публикации: {{ lab_object.upload_time }}</p>
-    <p>Рейтинг: <strong {% if lab_object.rating > 0 %} class="text-success"> +{{ lab_object.rating }} {% elif lab_object.rating == 0 %} class="text-warning"> {{ lab_object.rating }} {% else %} class="text-danger"> -{{ lab_object.rating }} {% endif %}</strong></p>
-
-    <a href="{{ lab_object.file.url }}">Загрузить</a>
+<div class="row mt-4">
+    <div class="col-6">
+        <h1 class="mb-0">{{ lab_object.name }}</h1>
+        <a href="{% url 'profile_view' lab_object.author.pk %}" class="text-dark">{{ lab_object.author.get_username }}</a>
+        <p class="mt-4">Курс: {{ lab_object.course }}</p>
+        <p>Категория: {{ lab_object.category.name }}</p>
+        <p>Вариант: {{ lab_object.variant }}</p>
+        <p>Год: {{ lab_object.year }}</p>
+        <p>Просмотры: {{ lab_object.views }}</p>
+        <p>Дата публикации: {{ lab_object.upload_time }}</p>
+        <p>Рейтинг: <strong {% if lab_object.rating > 0 %} class="text-success"> +{{ lab_object.rating }} {% elif lab_object.rating == 0 %} class="text-warning"> {{ lab_object.rating }} {% else %} class="text-danger"> -{{ lab_object.rating }} {% endif %}</strong></p>
+    
+        <a href="{{ lab_object.file.url }}">Загрузить</a>
+    </div>
+</div>
 {% endblock %}
