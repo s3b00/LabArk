@@ -1,0 +1,28 @@
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+    {% if page_object.has_previous %}  
+        <li class="page-item">
+        <a class="page-link" href="?page={{ page_object.previous_page_number  }}">Предыдущие</a>
+        </li>
+    {% else %}
+        <li class="page-item disabled">
+        <a class="page-link" href="#">Предыдущие</a>
+        </li>
+    {% endif %}
+
+    {% if page_object.has_others_pages %}
+    {% else %}
+      <li class="page-item active"><a class="page-link" href="#">{{ page_object.number }}</a></li>
+    {% endif %}
+    
+    {% if page_object.has_next %}
+        <li class="page-item">
+        <a class="page-link" href="?page={{ page_object.next_page_number }}">Следующие</a>
+        </li>
+    {% else %}
+    <li class="page-item disabled">
+        <a class="page-link" href="#">Следующие</a>
+        </li>
+    {% endif %}
+    </ul>
+</nav>

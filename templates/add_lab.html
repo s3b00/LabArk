@@ -8,10 +8,10 @@
 <div class="pt-4 col-12 d-flex justify-content-center align-items-center">
     <form method="post" action="{% url "lab_add" %}" class="col-9" enctype="multipart/form-data">
         {% csrf_token %}
-    
+
         <div class="form-group row">
             <label for="name" class="col-form-label">Название записи</label>
-            <input type="text" class="form-control {% if errors.name %}is-invalid{% else %} is-valid {% endif %}" name="name" id="name" placeholder="Название должно кратко описать суть записи">
+            <input type="text" class="form-control {% if errors.name %}is-invalid {% endif %}" name="name" id="name" placeholder="Название должно кратко описать суть записи">
         </div>
         <div class="form-group row">
             <label for="variant" class="col-form-label">Вариант (если без варианта - оставить пустым)</label>
@@ -31,7 +31,7 @@
         </div>
         <div class="form-group row">
             <label for="course" class="col-form-label">Курс</label>
-            <input type="number" class="form-control {% if errors.course %}is-invalid{% else %} is-valid {% endif %}" name="course" id="course" placeholder="Курс, для которого разрабатывалась запись">
+            <input type="number" class="form-control {% if errors.course %}is-invalid{% endif %}" name="course" id="course" placeholder="Курс, для которого разрабатывалась запись">
         </div>
         <div class="form-group row">
             <label for="file" class="col-form-label">Файл для хранения</label>

@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger  
 
 from LabArkApp.models import Lab, Category
 from . import forms
@@ -112,9 +113,22 @@ def details(request, pk):
 
 def get_profile(request, pk):
     user = get_object_or_404(User, id=pk)
+    last_labs = Lab.objects.all().filter(author__pk=pk)
+    paginator = Paginator(last_labs, 10)  
+
+    page = request.GET.get('page_number') 
+
+    try:  
+        labs_object = paginator.get_page(page)  
+    except PageNotAnInteger:  
+        labs_object = paginator.get_page(1)  
+    except EmptyPage:  
+        labs_object = paginator.get_page(paginator.num_pages) 
+
     return render(request, "profile.html", context={
         'user': user,
-        'last_labs': Lab.objects.all().filter(author__pk=pk)
+        'last_labs': labs_object,
+        'page': page
     })
 
 

@@ -29,7 +29,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for x in last_labs %}
+        {% for x in last_labs%}
             <tr>
               <td class="small"><a href="{% url "details" x.id %}" class="text-dark">{{ x.name }}</a></td>
               <td class="small">{{ x.variant }}</td>
@@ -41,6 +41,7 @@
         {% endfor %}
       </tbody>
     </table>
+    {% include "pagination.html" with page_object=last_labs%}
   {% else %}
     <div class="col-12 text-center mt-5">
       <h1>Этот пользователь еще не публиковал записи</h1>

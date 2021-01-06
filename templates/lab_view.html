@@ -5,7 +5,7 @@
 {% endblock %}
 {% block content %}
 <h1 class="mb-0">{{ lab_object.name }}</h1>
-<a href="{% url 'profile_view' lab_object.author.pk %}" class="text-dark">{{ lab_object.author.get_username }}</a>
+<a href="{% url 'profile_view' lab_object.author.pk %}" class="text-dark"><strong>{{ lab_object.author.get_username }}</strong></a>
 
 <div class="row mt-4">
     <div class="col-6">
