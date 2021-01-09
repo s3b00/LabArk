@@ -25,7 +25,8 @@ def faq(request):
 def popular(request):
     return render(request, 'index.html', context={
         'last_labs': Lab.objects.all().order_by('-views', 'name'),
-        'form': forms.AddCategoryForm()
+        'form': forms.AddCategoryForm(),
+        'message': "Самые просматриваемые записи на платформе Labark"
     })
 
 
@@ -37,7 +38,13 @@ def category_labs(request, pk):
 
 
 def archive(request):
-    return render(request, 'archive.html')
+    return render(request, 'archive.html', context={
+        'last_labs': Lab.objects.all(),
+        'form': forms.AddCategoryForm(),
+        'filter_form': True,
+        'message': "Не можете определится в том, что ищете? Используйте гибкие фильтры! :)",
+        'category': Category.objects.all(),
+    })
 
 
 def libs(request):

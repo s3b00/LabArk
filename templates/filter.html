@@ -1,0 +1,30 @@
+<table class="table m-0 mb-4 table-sm table-light">
+  <thead class="thead-dark">
+  <tr>
+      <td class="small">Название файла</td>
+      <td class="small">Вариант</td>
+      <td class="small">Категория</td>
+      <td class="small">Год написания</td>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+        <td class="small">
+          <input type="text" name="name" id="name" class="form-control form-control-sm" >
+        </td>
+        <td class="small">
+          <input type="text" name="" id="" class="form-control form-control-sm">
+        </td>
+        <td class="small">
+          <select id="category" name="category" class="custom-select custom-select-sm">
+            {% for x in category %}
+                <option value="{{ x.id }}">{{ x.name }}</option>
+            {% endfor %}
+          </select>
+        </td>
+        <td class="small">
+          <input type="number" class="form-control form-control-sm" name="year" id="year">
+        </td>
+    </tr>
+  </tbody>
+</table>

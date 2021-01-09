@@ -1,9 +1,55 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block title %}
 Архив
 {% endblock %}
 
 {% block content %}
-blank
+{% include "message.html" %}
+{% include "filter.html" %}
+<div class="row m-0 p-0 content">
+  <table class="table table-hover table-striped ml-0 mr-5 col-12 col-lg-9 w-100">
+      <thead class="thead-dark">
+      <tr>
+          <td class="small">Название файла</td>
+          <td class="small">Вариант</td>
+          <td class="small">Категория</td>
+          <td class="small">Год написания</td>
+          <td class="small">Автор</td>
+          <td class="small">Просмотры</td>
+          <td class="small">Рейтинг</td>
+      </tr>
+      </thead>
+      <tbody>
+      {% for x in last_labs %}
+          <tr>
+              <td class="small"><a href="{% url "details" x.id %}" class="text-dark">{{ x.name }}</a></td>
+              <td class="small">{% if x.variant > 0 %} {{ x.variant }} {% else %} Без варианта {% endif %}</td>
+              <td class="small"><a href="{% url "category_labs" x.category.id %}" class="text-dark">{{ x.category }}</a></td>
+              <td class="small">{{ x.year }}</td>
+              <td class="small"><a href="{% url "profile_view" x.author.id %}" class="text-dark">{{ x.author }}</a></td>
+              <td class="small">{{ x.views }}</td>
+              <td class="small">{{ x.rating }}</td>
+          </tr>
+      {% endfor %}
+      </tbody>
+  </table>
+  {% include "aside_nav.html" %}
+</div>
+
+<div class="modal fade" id="categoryAddForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLabel">Добавить категорию</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          {% include "add_category_form.html" %}
+      </div>
+  </div>
+</div>
+</div>
 {% endblock %}

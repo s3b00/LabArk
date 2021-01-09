@@ -1,8 +1,22 @@
-<form method="post" action="{% url "category_add" %}" id="category_form" class="col-12">
-    {% csrf_token %}
-    <div class="form-group row">
-        <label for="name" class="col-form-label">Название категории</label>
-        <input type="text" class="form-control" name="name" id="name" placeholder="Название дисциплины или краткое описание категории">
+<div class="modal fade" id="categoryAddForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+       <div class="modal-header">
+         <h4 class="modal-title" id="exampleModalLabel">Добавить категорию</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form method="post" action="{% url "category_add" %}" id="category_form" class="col-12">
+              {% csrf_token %}
+              <div class="form-group row">
+                  <label for="name" class="col-form-label">Название категории</label>
+                  <input type="text" class="form-control" name="name" id="name" placeholder="Название дисциплины или краткое описание категории">
+              </div>
+              <input type="submit" class="btn btn-primary m-auto d-block text-center" value="Добавить категорию">
+            </form>
+        </div>
     </div>
-    <input type="submit" class="btn btn-primary m-auto d-block text-center" value="Добавить категорию">
-</form>
+</div>
+</div>

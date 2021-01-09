@@ -47,7 +47,7 @@ class Category(models.Model):
 class Lab(models.Model):
     name = models.CharField(max_length=50, blank=False)
     course = models.IntegerField()
-    variant = models.IntegerField(default=0, null=True)
+    variant = models.CharField(default=0, null=True, max_length=20)
     year = models.IntegerField(default=datetime.now().year)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
