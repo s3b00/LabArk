@@ -24,7 +24,7 @@ Labark
       {% for x in last_labs %}
           <tr>
             <td class="small"><a href="{% url "details" x.id %}" class="text-dark">{{ x.name }}</a></td>
-            <td class="small">{% if x.variant > 0 %} {{ x.variant }} {% else %} Без варианта {% endif %}</td>
+            <td class="small">{% if x.variant == 0 %} Без варианта {% else %} {{ x.variant }} {% endif %}</td>
             <td class="small"><a href="{% url "category_labs" x.category.id %}" class="text-dark">{{ x.category }}</a></td>
             <td class="small">{{ x.year }}</td>
             <td class="small"><a href="{% url "profile_view" x.author.id %}" class="text-dark">{{ x.author }}</a></td>

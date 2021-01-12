@@ -29,21 +29,34 @@ def popular(request):
         'message': "Самые просматриваемые записи на платформе Labark"
     })
 
-
+    
 def category_labs(request, pk):
     return render(request, 'index.html', context={
         'last_labs': Lab.objects.all().filter(category__pk=pk),
-        'form': forms.AddCategoryForm()
+        'form': forms.AddCategoryForm(),
+        'message': "Все записи, имеющие категорию " + get_object_or_404(Category, pk=pk).name
     })
 
 
 def archive(request):
+    name = request.GET.get('name', "")
+    variant = request.GET.get('variant', "")
+    year = request.GET.get('year', '')
+    category = request.GET.get('category', '0')
+
+    last_data = {'name': name, 
+    'variant': variant, 
+    'year':year, 
+    'category':category 
+    }
+
     return render(request, 'archive.html', context={
-        'last_labs': Lab.objects.all(),
+        'last_labs': Lab.objects.filter(name__icontains=name, variant__icontains=variant, year__icontains=year, category__pk=category) if int(category) > 0 
+        else Lab.objects.filter(name__icontains=name, variant__icontains=variant, year__icontains=year),
         'form': forms.AddCategoryForm(),
-        'filter_form': True,
         'message': "Не можете определится в том, что ищете? Используйте гибкие фильтры! :)",
         'category': Category.objects.all(),
+        'last_data': last_data
     })
 
 
@@ -59,24 +72,19 @@ def links(request):
 
 def login_view(request):
     if request.method == "GET":
-        return render(request, 'login.html', context={
-            'form': forms.LoginUser()
-        })
+        return render(request, 'login.html')
     else:
-        form = forms.LoginUser(request.POST)
-
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    return HttpResponseRedirect("/")
-                else:
-                    pass
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect("/")
             else:
                 pass
+        else:
+            return HttpResponseRedirect(reverse('login'))
 
 
 def register(request):

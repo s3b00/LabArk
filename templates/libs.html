@@ -19,7 +19,7 @@
             <tr>
               <td class="small"><a href="{% url "category_labs" x.id %}" class="text-dark">{{ x.name }}</a></td>
               <td class="small">{{ x.downloads }}</td>
-              <td class="small">{{ x.get_views }}</td>
+              <td class="small">{% if x.get_views != None %} {{ x.get_views }} {% else %} Пока не было просмотрено :с {% endif %}</td>
             </tr>
         {% endfor %}
       </tbody>
