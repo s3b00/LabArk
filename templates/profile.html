@@ -10,10 +10,10 @@
         <img width="250px" height="250px" src="{{ user.profile.userpic.url }}" alt="{{ user.get_username }}" class="img-fluid">
       </div>
       <div class="col-12 col-md-9">
-        <p>Имя пользователя: {{ user.get_username }}</p>
-        <p>Имя: {{ user.first_name }}</p>
-        <p>Фамилия: {{ user.last_name }}</p>
+        <h1>{{ user.get_username }}</h1>
+        <p>{{ user.first_name }} {{ user.last_name }}</p>
         <p>Репутация: {{ user.profile.reputation }}</p>
+        <p>Статус: {{ user.profile.status }}</p>
       </div>
   </div>
   {% if last_labs %}
@@ -44,7 +44,7 @@
     {% include "pagination.html" with page_object=last_labs%}
   {% else %}
     <div class="col-12 text-center mt-5">
-      <h1>Этот пользователь еще не публиковал записи</h1>
+      <h2>Этот пользователь еще не публиковал записи</h2>
     </div>
   {% endif %}
 {% endblock %}

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Регистрация</title>
+  <title>Авторизация</title>
   <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
   <link rel="stylesheet" href="{% static "css/style.css" %}">
   <style>
@@ -26,7 +26,7 @@
   <div class="row h-100 justify-content-center align-items-center">
     <form class="col-12 col-lg-6 logform" method="POST" action="{% url 'login' %}">
       {% csrf_token %}
-      <img src="{% static "img/LabarkLogo.svg" %}" alt="LOGO" width="30%" height="30%" class="rounded mx-auto d-block">
+      <a href={% url "homepage" %}><img src="{% static "img/LabarkLogo.png" %}" alt="LOGO" width="40%" height="40%" class="rounded mx-auto d-block"></a>
       <div class="form-group">
         <label for="usernameInput">Имя пользователя</label>
         <br>

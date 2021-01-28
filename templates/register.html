@@ -24,34 +24,37 @@
 <body>
 <div class="container h-100">
   <div class="row h-100 justify-content-center align-items-center">
+    {% if data %}
+      <p>{{ data }}</p>
+    {% endif %}
     <form class="col-12 col-lg-6 logform" method="POST" action="{% url 'register' %}">
       {% csrf_token %}
-      <img src="{% static "img/LabarkLogo.svg" %}" alt="LOGO" width="30%" height="30%" class="rounded mx-auto d-block">
+      <a href="{% url 'homepage' %}"><img src="{% static "img/LabarkLogo.png" %}" alt="LOGO" width="40%" height="40%" class="rounded mx-auto d-block"></a>
       <div class="form-group">
         <label for="exampleInputEmail1">Email</label>
         <br>
-        <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" placeholder="Введите электронную почту">
+        <input type="email" class="form-control {% if errors.email %} is-invalid {% endif %}" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" placeholder="Введите электронную почту">
         <small id="emailHelp" class="form-text text-muted">Ваша почта нужна нам для отправки уведомлений.</small>
       </div>
       <div class="form-group">
         <label for="usernameInput">Имя пользователя</label>
         <br>
-        <input type="text" name="username" class="form-control" id="usernameid" placeholder="Введите свое уникальное имя">
+        <input type="text" name="username" class="form-control {% if errors.username %}is-invalid {% endif %}" id="usernameid" placeholder="Введите свое уникальное имя" >
       </div>
       <div class="form-group">
         <label for="secondnameInput">Фамилия</label>
         <br>
-        <input type="text" name="last_name" class="form-control" id="secondnameid" placeholder="Введите свою фамилию">
+        <input type="text" name="last_name" class="form-control {% if errors.last_name %} is-invalid {% endif %}" id="secondnameid" placeholder="Введите свою фамилию" >
       </div>
       <div class="form-group">
         <label for="nameInput">Имя</label>
         <br>
-        <input type="text" name="first_name" class="form-control" id="nameid" placeholder="Введите свое настоящее имя">
+        <input type="text" name="first_name" class="form-control {% if errors.first_name %}is-invalid {% endif %}" id="nameid" placeholder="Введите свое настоящее имя">
       </div>
       <div class="form-group">
         <label for="exampleInputPassword1">Пароль</label>
         <br>
-        <input type="password" class="form-control" name="password" id="exampleInputPassword1" aria-describedby="passwordHelp" placeholder="Введите пароль.">
+        <input type="password" class="form-control {% if errors.password %}is-invalid {% endif %}" name="password" id="exampleInputPassword1" aria-describedby="passwordHelp" placeholder="Введите пароль." >
         <small id="passwordHelp" class="form-text text-muted">Используйте сложные пароли в целях собственной безопасности. Не передавайте его третьим лицам.</small>
       </div>
       <div class="form-check">

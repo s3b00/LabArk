@@ -20,7 +20,7 @@
             <select id="category" name="category" class="custom-select custom-select-sm">
               <option value="0">Не имеет значения</option>
               {% for x in category %}
-                  <option value="{{ x.id }}">{{ x.name }}</option>
+                  <option value="{{ x.id }}" {% if last_data.category == x.id %} selected {% endif %}>{{ x.name }}</option>
               {% endfor %}
             </select>
           </td>

@@ -47,7 +47,7 @@ def archive(request):
     last_data = {'name': name, 
     'variant': variant, 
     'year':year, 
-    'category':category 
+    'category':category
     }
 
     return render(request, 'archive.html', context={
@@ -99,15 +99,17 @@ def register(request):
             user = User.objects.create_user(**form.cleaned_data)
             user.save()
             if request.POST.get("SetLogin") == "1":
-                user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+                user = authenticate(username=user.username, password=form.cleaned_data['password'])
                 if user is not None:
                     if user.is_active:
                         login(request, user)
-                        return HttpResponseRedirect("/")
-                    else:
-                        pass
-
-        return HttpResponseRedirect("/")
+                        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        else:
+            return render(request, 'register.html', context={
+                'form': forms.RegisterUser(),
+                'errors': form.errors
+            })
 
 
 @login_required

@@ -16,7 +16,7 @@
 <nav class="navbar navbar-expand-xl sticky-top navbar-light bg-light">
   <div class="container">
     <a class="navbar-brand ml-4 mr-5" href="{% url 'homepage' %}">
-      <img src="{% static "img/LabarkLogo.svg" %}" alt="logo" height="25px" class="mr-2 mt-0"> LABARK
+      <img src="{% static "img/logo.png" %}" alt="logo" height="25px" class="mr-2 mt-0"> LABARK
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -36,12 +36,6 @@
         <a href="{% url "faq" %}" class="nav-link">FAQ</a>
       </li>
     </ul>
-    {% comment %} <form class="form-inline">
-      <input class="form-control pl-0 mr-sm-1" type="search" placeholder="" aria-label="Search">
-      <button type="submit" class="btn btn-outline-dark my-2 my-sm-0">
-        Поиск
-      </button>
-    </form> {% endcomment %}
     </div>
     </div>
 </nav>
@@ -53,5 +47,8 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </body>
 </html>

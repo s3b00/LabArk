@@ -14,6 +14,7 @@ class Profile(models.Model):
     reputation = models.IntegerField(default=0)
     uploads = models.IntegerField(default=0)
     userpic = models.ImageField(upload_to="userpics", default="default.png")
+    status = models.TextField(max_length=100, default="Мой первый статус!")
 
     def __str__(self):
         return self.user.username
@@ -47,7 +48,7 @@ class Category(models.Model):
 class Lab(models.Model):
     name = models.CharField(max_length=50, blank=False)
     course = models.IntegerField()
-    variant = models.CharField(default=0, null=True, max_length=20)
+    variant = models.CharField(default="Без варианта", max_length=20)
     year = models.IntegerField(default=datetime.now().year)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)

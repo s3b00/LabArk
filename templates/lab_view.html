@@ -6,7 +6,10 @@
 {% block content %}
 <h1 class="mb-0 mt-3">{{ lab_object.name }}</h1>
 <a href="{% url 'profile_view' lab_object.author.pk %}" class="text-dark"><strong>{{ lab_object.author.get_username }}</strong></a>
+<br>
+<div id="rating-buttons">
 
+</div>
 <div class="row mt-4">
     <div class="col-6">
         <p class="mt-4">Курс: {{ lab_object.course }}</p>
@@ -16,8 +19,10 @@
         <p>Просмотры: {{ lab_object.views }}</p>
         <p>Дата публикации: {{ lab_object.upload_time }}</p>
         <p>Рейтинг: <strong {% if lab_object.rating > 0 %} class="text-success"> +{{ lab_object.rating }} {% elif lab_object.rating == 0 %} class="text-warning"> {{ lab_object.rating }} {% else %} class="text-danger"> -{{ lab_object.rating }} {% endif %}</strong></p>
-    
-        <a href="{{ lab_object.file.url }}">Загрузить</a>
+       
+        <button class="btn btn-dark mx-auto d-flex btn-lg">
+            <a href="{{ lab_object.file.url }}" style="color: white;">Загрузить</a>
+        </button>
     </div>
     <div class="col-6">
         {% if lab_object.extension == ".docx" or lab_object.extension == ".doc "%}
@@ -29,4 +34,5 @@
         {% endif %}
     </div>
 </div>
+    <script src="{% static "js/components.jsx" %}" type="text/babel"></script>
 {% endblock %}
