@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class UploadLabForm(forms.ModelForm):
     class Meta:
         model = models.Lab
-        fields = ('name', 'course')
+        fields = ('name', 'course', 'variant', 'year')
 
 
 class AddCategoryForm(forms.ModelForm):

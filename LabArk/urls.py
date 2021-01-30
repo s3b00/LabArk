@@ -23,6 +23,7 @@ urlpatterns = [
     re_path(r'^labs/add$', LA.add_lab, name="lab_add"),
     re_path(r'^category/add/?$', LA.add_category, name="category_add"),
     re_path(r'^random_lab$', LA.get_random_lab, name="random_lab"),
+    re_path(r'^inc_downloads$', LA.add_download_to_category, name="inc_download_category"),
     path('', LA.home, name="homepage"),
 ]
 

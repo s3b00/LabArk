@@ -56,6 +56,7 @@ class Lab(models.Model):
     upload_time = models.DateTimeField(auto_now_add=True)
     file = models.FileField(upload_to="files")
     rating = models.IntegerField(default=0)
+    downloads = models.IntegerField(default=0)
 
     def get_absolute_url(self):
         return reverse('people.views.details', args=[str(self.id)])

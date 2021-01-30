@@ -103,8 +103,8 @@ def register(request):
                 if user is not None:
                     if user.is_active:
                         login(request, user)
-                        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+                        return HttpResponseRedirect("/")
+            return HttpResponseRedirect("/")
         else:
             return render(request, 'register.html', context={
                 'form': forms.RegisterUser(),
@@ -152,7 +152,14 @@ def get_profile(request, pk):
 def add_lab(request):
     if request.method == "POST":
         form = forms.UploadLabForm(request.POST)
-        if form.is_valid():
+
+        isFileNotUploaded = False
+        try:
+            print(request.FILES['file'])
+        except:
+            isFileNotUploaded = True
+
+        if form.is_valid() and not isFileNotUploaded:
             if request.user.is_authenticated:
                 author = request.user
             else:
@@ -173,7 +180,8 @@ def add_lab(request):
             return render(request, 'add_lab.html', context={
                 'form': forms.UploadLabForm(),
                 'category': Category.objects.all(),
-                'errors': form.errors
+                'errors': form.errors,
+                'file_not_uploaded': isFileNotUploaded
             })
     else:
         return render(request, "add_lab.html", context={
@@ -189,10 +197,22 @@ def add_category(request):
         if form.is_valid():
             category = Category.objects.create(name=form.cleaned_data['name'])
             category.save()
-        return HttpResponseRedirect("/")
+
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def get_random_lab(request):
     return HttpResponseRedirect(reverse('details', args=[randint(1, Lab.objects.count())]))
+
+
+def add_download_to_category(request):
+    if request.method == "GET":
+        category_object = get_object_or_404(Category, pk=request.GET.get('category'))
+        category_object.downloads += 1
+        category_object.save()
+        lab_object = get_object_or_404(Lab, pk=request.GET.get('lab'))
+        lab_object.downloads += 1
+        lab_object.save()
+        return HttpResponseRedirect(reverse('details', args=[lab_object.id]))

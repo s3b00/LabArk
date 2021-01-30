@@ -9,12 +9,15 @@
     <form method="post" action="{% url "lab_add" %}" class="col-9" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group row">
-            <label for="name" class="col-form-label">Название записи</label>
-            <input type="text" class="form-control {% if errors.name %}is-invalid {% endif %}" name="name" id="name">
+            <label for="name" class="col-form-label">Название записи*</label>
+            <input type="text" class="form-control {% if errors.name %}is-invalid {% endif %}" name="name" id="name" placeholder="Лабораторная работа №1">
+            {% if errors.name %}
+                <div class="invalid-feedback">Введите название к записи.</div>
+            {% endif %}
         </div>
         <div class="form-group row">
-            <label for="variant" class="col-for m-label">Вариант (прим. 1-5, 25, Без варианта)</label>
-            <input type="text" class="form-control" name="variant" id="variant" >
+            <label for="variant" class="col-for m-label">Вариант</label>
+            <input type="text" class="form-control" name="variant" id="variant" placeholder="1-5, 25, Без варианта">
         </div>
         <div class="form-group row">
             <label for="category" class="col-form-label">Категория</label>
@@ -25,25 +28,34 @@
             </select>
         </div>
         <div class="form-group row">
-            <label for="year" class="col-form-label">Год разработки файла (опционально)</label>
+            <label for="year" class="col-form-label">Год разработки файла</label>
             <input type="number" class="form-control" name="year" id="year">
         </div>
         <div class="form-group row">
-            <label for="course" class="col-form-label">Курс</label>
+            <label for="course" class="col-form-label">Курс*</label>
             <input type="number" class="form-control {% if errors.course %}is-invalid{% endif %}" name="course" id="course" >
+            {% if errors.course %}
+                <div class="invalid-feedback">Введите курс, на котором вы сделали работу.</div>
+            {% endif %}
         </div>
         <div class="form-group row">
-            <label for="file" class="col-form-label">Файл</label>
+            <label for="file" class="col-form-label">Файл*</label>
             <div class="custom-file">
-                <input type="file" class="custom-file-input" id="file" name="file">
+                <input type="file" id="file" name="file" {% if file_not_uploaded %} class="is-invalid custom-file-input" {% else %} class="custom-file-input" {% endif %}>
                 <label class="custom-file-label" for="inputGroupFile04">Выберите файл для хранения</label>
             </div>
+            {% if file_not_uploaded %}
+                <div class="text-danger small">Файл не был загружен.</div>
+            {% endif %}
+        </div>
+        <div class="form-group row">
+          
+            <small class="m-0 p-0">Поля, обозначенные звездочкой (*) являются обязательными для заполнения!</small>
         </div>
         <div class="form-row text-center d-flex justify-content-center">
-            <input type="submit" class="btn btn-primary btn-block mt-2" value="Сохранить запись">
-            <input type="button" class="btn btn-primary btn-block mt-2" data-toggle="modal" data-target="#categoryAddForm" value="Добавить категорию">
+            <input type="submit" class="btn btn-dark btn-block mt-2" value="Сохранить запись">
+            <input type="button" class="btn btn-dark btn-block mt-2" data-toggle="modal" data-target="#categoryAddForm" value="Добавить категорию">
         </div>
-      
     </form>
     {%include "add_category_form.html" %}
 </div>
