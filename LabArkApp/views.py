@@ -39,25 +39,28 @@ def category_labs(request, pk):
 
 
 def archive(request):
-    name = request.GET.get('name', "")
-    variant = request.GET.get('variant', "")
-    year = request.GET.get('year', '')
-    category = request.GET.get('category', '0')
+    if request.method == "GET":
+        name = request.GET.get('name', "")
+        variant = request.GET.get('variant', "")
+        year = request.GET.get('year', '')
+        category = request.GET.get('category', '0')
 
-    last_data = {'name': name, 
-    'variant': variant, 
-    'year':year, 
-    'category':category
-    }
+        last_data = {'name': name, 
+        'variant': variant, 
+        'year':year, 
+        'category':category
+        }
 
-    return render(request, 'archive.html', context={
-        'last_labs': Lab.objects.filter(name__icontains=name, variant__icontains=variant, year__icontains=year, category__pk=category) if int(category) > 0 
-        else Lab.objects.filter(name__icontains=name, variant__icontains=variant, year__icontains=year),
-        'form': forms.AddCategoryForm(),
-        'message': "Не можете определится в том, что ищете? Используйте гибкие фильтры! :)",
-        'category': Category.objects.all(),
-        'last_data': last_data
-    })
+        print(last_data)
+
+        return render(request, 'archive.html', context={
+            'last_labs': Lab.objects.filter(name__icontains=name, variant__icontains=variant, year__icontains=year, category__pk=category) if int(category) > 0 
+            else Lab.objects.filter(name__icontains=name, variant__icontains=variant, year__icontains=year),
+            'form': forms.AddCategoryForm(),
+            'message': "Не можете определится в том, что ищете? Используйте гибкие фильтры! :)",
+            'category': Category.objects.all(),
+            'last_data': last_data
+        })
 
 
 def libs(request):
@@ -159,6 +162,7 @@ def add_lab(request):
         except:
             isFileNotUploaded = True
 
+        variant = request.POST.get('variant') if request.POST.get('variant') != "" else "Без варианта"
         if form.is_valid() and not isFileNotUploaded:
             if request.user.is_authenticated:
                 author = request.user
@@ -167,6 +171,7 @@ def add_lab(request):
 
             lab = Lab(**form.cleaned_data)
             lab.author = author
+            lab.variant = variant
             lab.category = Category.objects.get(pk=request.POST.get("category"))
             lab.file = request.FILES['file']
             lab.save()
@@ -216,3 +221,6 @@ def add_download_to_category(request):
         lab_object.downloads += 1
         lab_object.save()
         return HttpResponseRedirect(reverse('details', args=[lab_object.id]))
+
+def blog(request):
+    return render(request, 'blog.html')

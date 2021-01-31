@@ -70,3 +70,12 @@ class Lab(models.Model):
 
     class Meta:
         ordering = ["-id"]
+
+
+class Post(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    upload_time = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length=255, blank=False)
+    text = models.TextField()
+    file = models.FileField(upload_to="blog_files")
+    
