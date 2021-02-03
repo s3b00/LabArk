@@ -4,8 +4,11 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger  
+from django.core.mail import send_mail
 
-from LabArkApp.models import Lab, Category
+from django.conf import settings
+
+from LabArkApp.models import Lab, Category, Post
 from . import forms
 from random import randint
 from django.urls import reverse
@@ -223,4 +226,27 @@ def add_download_to_category(request):
         return HttpResponseRedirect(reverse('details', args=[lab_object.id]))
 
 def blog(request):
-    return render(request, 'blog.html')
+    # send_mail('Тема', 'Тело письма', settings.EMAIL_HOST_USER, ['smoxgg@gmail.com'])
+    return render(request, 'blog.html', context={
+        'form': forms.AddPostForm(),
+        'posts': Post.objects.all()
+    })
+
+
+def add_post_to_blog(request):
+    if request.method == "POST" and request.user.is_staff:
+        form = forms.AddPostForm(request.POST)
+
+        if form.is_valid():
+            post = Post(**form.cleaned_data)
+            if 'file' in request.FILES:
+                post.file = request.FILES['file']
+            post.author = request.user
+            post.save()
+        else:
+            return 
+        return HttpResponseRedirect(reverse('blog'))
+
+def premuim_view(request):
+    if request.method == "GET":
+        return render(request, 'premium.html')

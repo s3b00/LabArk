@@ -77,5 +77,5 @@ class Post(models.Model):
     upload_time = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=255, blank=False)
     text = models.TextField()
-    file = models.FileField(upload_to="blog_files")
+    file = models.FileField(upload_to="blog_files", null=True)
     

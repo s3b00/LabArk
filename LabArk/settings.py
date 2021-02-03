@@ -114,3 +114,11 @@ LOGIN_REDIRECT_URL = '/'
 MEDIA_URL = "/public/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "public")
 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "labark.group"
+EMAIL_HOST_PASSWORD = "nskforever"
+EMAIL_USE_TLS = True
+
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

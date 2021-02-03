@@ -26,3 +26,9 @@ class LoginUser(forms.ModelForm):
     class Meta:
         model = User
         fields = ('username', 'password')
+
+
+class AddPostForm(forms.ModelForm):
+    class Meta:
+        model = models.Post
+        fields = ('title', 'text')

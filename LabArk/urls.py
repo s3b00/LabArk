@@ -25,6 +25,8 @@ urlpatterns = [
     re_path(r'^random_lab$', LA.get_random_lab, name="random_lab"),
     re_path(r'^inc_downloads$', LA.add_download_to_category, name="inc_download_category"),
     re_path(r'^blog$', LA.blog, name="blog"),
+    re_path(r'^add_post$', LA.add_post_to_blog, name="add_post"),
+    re_path(r'^premium$', LA.premuim_view, name="premium"),
     path('', LA.home, name="homepage"),
 ]
 

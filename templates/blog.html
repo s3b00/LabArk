@@ -6,23 +6,75 @@
 
 {% block content %}
 <div class="row m-0 p-0 content">
-    <div class="col-9"></div>
-    {% include "aside_nav.html" %}
-  </div>
+    <div class="col-9 pt-5">
+      {% if user.is_staff %} 
+      <div class="row">
+        <button type="button" class="btn btn-dark btn-lg btn-block" data-toggle="modal" data-target="#addPostForm">Добавить пост</button>
+      </div>
 
-<div class="modal fade" id="categoryAddForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
-       <div class="modal-header">
-         <h4 class="modal-title" id="exampleModalLabel">Добавить категорию</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+      {% for post in posts %}
+        <div class="card card-outline-secondary my-4">
+          <div class="card-header">
+            <h4>{{ post.title }}</h4>
+          </div>
+          <div class="card-body">
+            <p>{{ post.text }}</p>
+            <small class="text-muted">Опубликовано <a class="text-dark" href="{% url 'profile_view' post.author.id %}">{{ post.author }}</a>  {{ post.upload_time }}</small>
+          </div>
         </div>
-        <div class="modal-body">
-            {% include "add_category_form.html" %}
-        </div>
-    </div>
+        <hr>
+
+      {% endfor %}
+    {% endif %}
+    </div> 
+    
+    {% include "aside_nav.html" %}
 </div>
+
+{% include "add_category_form.html" %}
+
+<div class="modal fade" id="addPostForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel">Новый пост</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form method="post" action="{% url "add_post" %}" class="col-12" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="form-group row">
+                  <label for="title" class="col-form-label">Заголовок*</label>
+                  <input type="text" class="form-control {% if errors.name %}is-invalid {% endif %}" name="title" id="title" placeholder="Лучшая новость!">
+                  {% if errors.title %}
+                      <div class="invalid-feedback">Введите заголовок к записи.</div>
+                  {% endif %}
+              </div>
+              <div class="form-group row">
+                  <label for="text" class="col-for m-label">Текст*</label>
+                  <textarea  type="text" class="form-control" name="text" id="text" placeholder="Много текста." rows=10> </textarea>
+              </div>
+              <div class="form-group row">
+                  <label for="file" class="col-form-label">Файл</label>
+                  <div class="custom-file">
+                      <input type="file" id="file" name="file" {% if file_not_uploaded %} class="is-invalid custom-file-input" {% else %} class="custom-file-input" {% endif %}>
+                      <label class="custom-file-label" for="inputGroupFile04">Выберите файл для записи</label>
+                  </div>
+                  {% if file_not_uploaded %}
+                      <div class="text-danger small">Файл не был загружен.</div>
+                  {% endif %}
+              </div>
+              <div class="form-group row">
+                  <small class="m-0 p-0">Поля, обозначенные звездочкой (*) являются обязательными для заполнения!</small>
+              </div>
+              <div class="form-row text-center d-flex justify-content-center">
+                  <input type="submit" class="btn btn-dark btn-block mt-2" value="Опубликовать">
+              </div>
+            </form>
+          </div>
+      </div>
+  </div>
 </div>
 {% endblock %}
