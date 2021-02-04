@@ -27,6 +27,7 @@ urlpatterns = [
     re_path(r'^blog$', LA.blog, name="blog"),
     re_path(r'^add_post$', LA.add_post_to_blog, name="add_post"),
     re_path(r'^premium$', LA.premuim_view, name="premium"),
+    re_path(r'^update_rating$', LA.update_rating, name="set_rating"),
     path('', LA.home, name="homepage"),
 ]
 

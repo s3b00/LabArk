@@ -3,16 +3,20 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
+from django.http import JsonResponse
+
+
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger  
 from django.core.mail import send_mail
+from django.core import serializers
 
 from django.conf import settings
-
 from LabArkApp.models import Lab, Category, Post
 from . import forms
 from random import randint
 from django.urls import reverse
 
+import json
 
 def home(request):
     return render(request, 'index.html', context={
@@ -233,6 +237,25 @@ def blog(request):
     })
 
 
+def update_rating(request):
+    if request.method == "GET" and request.user.is_authenticated:
+        lab = get_object_or_404(Lab, id=request.GET.get('lab_pk'))
+        operation = request.GET.get('operation')
+        user = get_object_or_404(User, id=request.GET.get('user_pk'))
+        if request.user == user:
+            print("ITS OK")
+        if user.profile.reputation >=10:
+            if operation == "inc":
+                lab.rating += 10
+            elif operation == "dec":
+                lab.rating -= 10
+            user.profile.reputation -= 10
+            lab.save()
+            user.save()
+    
+    return JsonResponse({'new_rating':lab.rating})
+
+
 def add_post_to_blog(request):
     if request.method == "POST" and request.user.is_staff:
         form = forms.AddPostForm(request.POST)
@@ -246,6 +269,7 @@ def add_post_to_blog(request):
         else:
             return 
         return HttpResponseRedirect(reverse('blog'))
+
 
 def premuim_view(request):
     if request.method == "GET":

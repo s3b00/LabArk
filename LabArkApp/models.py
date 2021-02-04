@@ -79,3 +79,5 @@ class Post(models.Model):
     text = models.TextField()
     file = models.FileField(upload_to="blog_files", null=True)
     
+    class Meta:
+        ordering = ["-id"]

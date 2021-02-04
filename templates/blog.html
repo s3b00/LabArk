@@ -6,15 +6,33 @@
 
 {% block content %}
 <div class="row m-0 p-0 content">
-    <div class="col-9 pt-5">
+    <div class="col-12 col-lg-9 pt-5">
       {% if user.is_staff %} 
       <div class="row">
-        <button type="button" class="btn btn-dark btn-lg btn-block" data-toggle="modal" data-target="#addPostForm">Добавить пост</button>
+        <button type="button" class="btn btn-dark btn-lg btn-block ml-3 mr-3" data-toggle="modal" data-target="#addPostForm">Добавить пост</button>
       </div>
+        <script type="text/javascript" src="https://vk.com/js/api/openapi.js?168"></script>
+          <div class="col-12 m-0 mt-3 p-0 d-block">
+            <div id="vk_groups"></div>
+          </div> 
+        <script type="text/javascript">
+            VK.Widgets.Group("vk_groups", {mode: 4, wide: 0, height: "400", color1: 'F8F9FA', color3: '000000', 'width': 'auto'}, 202340747);
+        </script>
+      {% else %}
+        <script type="text/javascript" src="https://vk.com/js/api/openapi.js?168"></script>
+        <div class="col-12 m-0 p-0 d-block">
+          <div id="vk_groups"></div>
+        </div> 
+        <script type="text/javascript">
+          VK.Widgets.Group("vk_groups", {mode: 4, wide: 0, height: "400", color1: 'F8F9FA', color3: '000000', 'width': 'auto'}, 202340747);
+        </script>
+      {% endif %}
+
+
 
       {% for post in posts %}
         <div class="card card-outline-secondary my-4">
-          <div class="card-header">
+          <div class="card-header bg-light">
             <h4>{{ post.title }}</h4>
           </div>
           <div class="card-body">
@@ -25,7 +43,6 @@
         <hr>
 
       {% endfor %}
-    {% endif %}
     </div> 
     
     {% include "aside_nav.html" %}

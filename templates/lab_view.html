@@ -4,51 +4,89 @@
 {{ lab_object.name }}
 {% endblock %}
 {% block content %}
-<h1 class="mb-0 mt-3">{{ lab_object.name }}</h1>
-<a href="{% url 'profile_view' lab_object.author.pk %}" class="text-dark"><strong>{{ lab_object.author.get_username }}</strong></a>
-<br>
-<div id="rating-buttons">
-
-</div>
-<div class="row mt-4">
-    <div class="col-6">
-        <p class="mt-4">Курс: {{ lab_object.course }}</p>
-        <p>Категория: {{ lab_object.category.name }}</p>
-        <p>Вариант: {% if lab_object.variant > 0 %} {{ lab_object.variant }} {% else %} Без варианта {% endif %}</p>
-        <p>Год: {{ lab_object.year }}</p>
-        <p>Дата публикации: {{ lab_object.upload_time }}</p>
-        <p>Просмотры: {{ lab_object.views }}</p>
-        <p>Рейтинг: <strong {% if lab_object.rating > 0 %} class="text-success"> +{{ lab_object.rating }} {% elif lab_object.rating == 0 %} class="text-warning"> {{ lab_object.rating }} {% else %} class="text-danger"> -{{ lab_object.rating }} {% endif %}</strong></p>
-        <p>Загрузки: <strong>{{ lab_object.downloads }} </strong></p>
-        <button class="btn btn-dark mx-auto mt-4 d-flex btn-lg w-50" onclick="get_file();">
-            <p class="m-auto">Загрузить</p>
-        </button>
+  <h1 class="mb-0 mt-3">{{ lab_object.name }}</h1>
+  <a href="{% url 'profile_view' lab_object.author.pk %}" class="text-dark"><strong>{{ lab_object.author.get_username }}</strong></a>
+  <br>
+  {% if user.is_authenticated %}
+    <div id="rating-buttons">
+        <button type="button" class="btn btn-outline-success btn-sm" onclick="add_reputation()">+10</button>
+        <button type="button" class="btn btn-outline-danger btn-sm" onclick="sub_reputation()">-10</button>
     </div>
-    <div class="col-6">
-        {% if lab_object.extension == ".docx" or lab_object.extension == ".doc "%}
-            <img src="{% static "img/docx.png" %}" alt="word file" class="img-fluid">
-        {% elif lab_object.extension == ".pdf" %}
-            <img src="{% static "img/pdf.png" %}" alt="pdf file" class="img-fluid">
-        {% elif lab_object.extension == ".zip" or lab_object.extension == ".7z" or lab_object.extension == ".rar" or lab_object.extension == ".zipx" or lab_object.extension == ".tar"%}
-            <img src="{% static "img/zip.png" %}" alt="zip file" class="img-fluid">
-        {% endif %}
-    </div>
-</div>
-    <script src="{% static "js/rating_buttons.jsx" %}" type="text/babel"></script>
-    <script>
-        function get_file() {
-            const category_id = "{{ lab_object.category.id }}";
-            var request = new XMLHttpRequest();
+  {% endif %}
+  <div class="row mt-4">
+      <div class="col-6">
+          <p class="mt-4">Курс: {{ lab_object.course }}</p>
+          <p>Категория: {{ lab_object.category.name }}</p>
+          <p>Вариант: {% if lab_object.variant > 0 %} {{ lab_object.variant }} {% else %} Без варианта {% endif %}</p>
+          <p>Год: {{ lab_object.year }}</p>
+          <p>Дата публикации: {{ lab_object.upload_time }}</p>
+          <p>Просмотры: {{ lab_object.views }}</p>
+          <p id='rating'>Рейтинг: <strong {% if lab_object.rating > 0 %} class="text-success"> +{{ lab_object.rating }} {% elif lab_object.rating == 0 %} class="text-warning"> {{ lab_object.rating }} {% else %} class="text-danger"> -{{ lab_object.rating }} {% endif %}</strong></p>
+          <p>Загрузки: <strong>{{ lab_object.downloads }} </strong></p>
+          <button class="btn btn-dark mx-auto mt-4 d-flex btn-lg w-50" onclick="get_file();">
+              <p class="m-auto">Загрузить</p>
+          </button>
+      </div>
+      <div class="col-6">
+          {% if lab_object.extension == ".docx" or lab_object.extension == ".doc"%}
+              <img src="{% static "img/docx.png" %}" alt="word file" class="img-fluid">
+          {% elif lab_object.extension == ".pdf" %}
+              <img src="{% static "img/pdf.png" %}" alt="pdf file" class="img-fluid">
+          {% elif lab_object.extension == ".zip" or lab_object.extension == ".7z" or lab_object.extension == ".rar" or lab_object.extension == ".zipx" or lab_object.extension == ".tar"%}
+              <img src="{% static "img/zip.png" %}" alt="zip file" class="img-fluid">
+          {% endif %}
+      </div>
+  </div>
+  <script>
+    function get_file() {
+      const category_id = "{{ lab_object.category.id }}";
+      var request = new XMLHttpRequest();
 
-            function reqReadyStateChange() {
-                if (request.readyState == 4 && request.status == 200)
-                    location.reload();
-            }
-            request.open("GET", "{% url 'inc_download_category' %}?" + `category=${category_id}&lab={{ lab_object.id }}`);
-            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            request.onreadystatechange = reqReadyStateChange;
-            request.send();
-            window.location.href = '{{ lab_object.file.url }}';
-        }
-    </script>
+      function reqReadyStateChange() {
+          if (request.readyState == 4 && request.status == 200)
+              location.reload();
+      }
+      request.open("GET", "{% url 'inc_download_category' %}?" + `category=${category_id}&lab={{ lab_object.id }}`);
+      request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      request.onreadystatechange = reqReadyStateChange;
+      request.send();
+      window.location.href = '{{ lab_object.file.url }}';
+    }
+
+    async function add_reputation() {
+      let response = await fetch("{% url 'set_rating' %}?lab_pk={{ lab_object.pk }}&user_pk={{ user.pk }}&operation=inc")
+
+      if (response.ok) {
+        /*let json = await response.json();
+        const rating = document.getElementById('rating')
+        if (json.new_rating > 0 )
+          rating.innerText = `Рейтинг: <strong class='text-success'>{json.new_rating}</strong>`
+        else if (json.new_rating == 0)
+          rating.innerText = "Рейтинг: <strong class='text-warning'>{{ lab_object.rating }}</strong>"
+        else
+          rating.innerText = "Рейтинг: <strong class='text-danger'>{{ lab_object.rating }}</strong>" */
+        window.location.reload()
+      } else {
+        alert("Ошибка HTTP: " + response.status);
+      }
+    }
+
+    async function sub_reputation(){
+      let response = await fetch("{% url 'set_rating' %}?lab_pk={{ lab_object.pk }}&user_pk={{ user.pk }}&operation=dec")
+
+      if (response.ok) {
+        /*let json = await response.json();
+        const rating = document.getElementById('rating')
+        if (json.new_rating > 0 )
+          rating.innerText = `Рейтинг: <strong class='text-success'>{json.new_rating}</strong>`
+        else if (json.new_rating == 0)
+          rating.innerText = "Рейтинг: <strong class='text-warning'>{{ lab_object.rating }}</strong>"
+        else
+          rating.innerText = "Рейтинг: <strong class='text-danger'>{{ lab_object.rating }}</strong>" */
+        window.location.reload()
+      } else {
+        alert("Ошибка HTTP: " + response.status);
+      }
+    }
+  </script>
 {% endblock %}
