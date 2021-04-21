@@ -113,6 +113,7 @@ LOGIN_REDIRECT_URL = '/'
 
 MEDIA_URL = "/public/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "public")
+MAX_UPLOAD_SIZE = "5242880"
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587

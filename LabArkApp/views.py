@@ -5,6 +5,8 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
 
+from django.conf import settings
+
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger  
 from django.core.mail import send_mail
@@ -180,7 +182,17 @@ def add_lab(request):
             lab.author = author
             lab.variant = variant
             lab.category = Category.objects.get(pk=request.POST.get("category"))
-            lab.file = request.FILES['file']
+            file = request.FILES['file']
+            if file.size < int(settings.MAX_UPLOAD_SIZE):
+                lab.file = file
+            else:
+                return render(request, 'add_lab.html', context={
+                'form': forms.UploadLabForm(),
+                'category': Category.objects.all(),
+                'errors': form.errors,
+                'file_not_uploaded': True
+                })
+
             lab.save()
 
             author.profile.reputation += 10
@@ -242,8 +254,9 @@ def update_rating(request):
         lab = get_object_or_404(Lab, id=request.GET.get('lab_pk'))
         operation = request.GET.get('operation')
         user = get_object_or_404(User, id=request.GET.get('user_pk'))
-        if request.user == user:
-            print("ITS OK")
+        if request.user != user:
+            return HttpResponse("-2")
+
         if user.profile.reputation >=10:
             if operation == "inc":
                 lab.rating += 10
@@ -252,8 +265,10 @@ def update_rating(request):
             user.profile.reputation -= 10
             lab.save()
             user.save()
+        else:
+            return HttpResponse("-1")
+
     
-    return JsonResponse({'new_rating':lab.rating})
 
 
 def add_post_to_blog(request):

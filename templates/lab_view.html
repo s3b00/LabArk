@@ -57,15 +57,14 @@
       let response = await fetch("{% url 'set_rating' %}?lab_pk={{ lab_object.pk }}&user_pk={{ user.pk }}&operation=inc")
 
       if (response.ok) {
-        /*let json = await response.json();
-        const rating = document.getElementById('rating')
-        if (json.new_rating > 0 )
-          rating.innerText = `Рейтинг: <strong class='text-success'>{json.new_rating}</strong>`
-        else if (json.new_rating == 0)
-          rating.innerText = "Рейтинг: <strong class='text-warning'>{{ lab_object.rating }}</strong>"
-        else
-          rating.innerText = "Рейтинг: <strong class='text-danger'>{{ lab_object.rating }}</strong>" */
-        window.location.reload()
+        let answer = await response.text();
+        if (answer == "-1") {
+          alert("Недостаточно очков на счете!")
+        } else if (answer == "-2") {
+          alert("Не пытайтесь нас обмануть!")
+        } else {
+          window.location.reload()
+        }
       } else {
         alert("Ошибка HTTP: " + response.status);
       }
@@ -75,15 +74,14 @@
       let response = await fetch("{% url 'set_rating' %}?lab_pk={{ lab_object.pk }}&user_pk={{ user.pk }}&operation=dec")
 
       if (response.ok) {
-        /*let json = await response.json();
-        const rating = document.getElementById('rating')
-        if (json.new_rating > 0 )
-          rating.innerText = `Рейтинг: <strong class='text-success'>{json.new_rating}</strong>`
-        else if (json.new_rating == 0)
-          rating.innerText = "Рейтинг: <strong class='text-warning'>{{ lab_object.rating }}</strong>"
-        else
-          rating.innerText = "Рейтинг: <strong class='text-danger'>{{ lab_object.rating }}</strong>" */
-        window.location.reload()
+        let answer = await response.text();
+        if (answer == "-1") {
+          alert("Недостаточно очков на счете!")
+        } else if (answer == "-2") {
+          alert("Не пытайтесь нас обмануть!")
+        } else {
+          window.location.reload()
+        }
       } else {
         alert("Ошибка HTTP: " + response.status);
       }
